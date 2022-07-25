@@ -2,18 +2,18 @@ use crate::services::http_service;
 
 //参数生命周期
 #[tokio::main]
-pub async fn getAvatarArrayFromPlatformServer(
+pub async fn get_avatar_array_from_platform_server(
     url: &'static str,
     token: &'static str,
     array: Vec<&'static str>,
 ) -> Vec<String> {
-    let mut array = array.chunks(1);
+    let array = array.chunks(1);
     // println!("in one : {:?}", array);
     let mut threads = vec![];
 
     for item in array {
         // println!("for:{:?}", item);
-        let mut arr = item[0];
+        let arr = item[0];
         let h = tokio::spawn(async move { http_service::get(url, token, &arr).await });
         threads.push(h);
     }
@@ -30,7 +30,7 @@ pub async fn getAvatarArrayFromPlatformServer(
                 }
                 Err(e) => panic!("{:?}", e),
             },
-            Err(err) => panic!(),
+            Err(_err) => panic!(),
         }
     }
     // tokio::try_join!().unwrap();
