@@ -1,0 +1,22 @@
+[package]
+name = "webservice"
+version = "0.1.0"
+edition = "2021"
+default-run = "account_server"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+actix-web = "4"
+actix-rt = "2.7.0"
+serde = { version = "1.0.142", features = ["derive"] }
+serde_json = "1.0.83"
+chrono = { version = "0.4.20", features = ["serde"] }
+dotenv = "0.15.0"
+mongodb = "2.3.0"
+futures = "0.3"
+awc = "3.0"
+redis = { version = "0.21", features = ["cluster", "connection-manager", "tokio-comp", "tokio-native-tls-comp"] }
+
+[[bin]]
+name = "account_server"
