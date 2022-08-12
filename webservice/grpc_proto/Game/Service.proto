@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+
+package GrpcProto;
+
+service GameGrpcService {
+    rpc DeliverOrder (DeliverOrderRequest) returns (DeliverOrderReply) {
+        option (google.api.http) = {
+            post: "/v1/order"
+            body: "*"
+        };
+    }
+
+
+    // SayHello method!
+    rpc SayHello (HelloRequest) returns (HelloReply) {
+        option (google.api.http) = {
+            get: "/v1/greeter/{name}"
+        };
+    }
+    // SayHelloFrom method!
+    rpc SayHelloFrom (HelloRequestFrom) returns (HelloReply) {
+        option (google.api.http) = {
+            post: "/v1/greeter"
+            body: "*"
+        };
+    }
+}
+
+
+message OrderProduct {
+    int32 Price = 1;
+    string ID = 2;
+}
+
+message DeliverOrderRequest {
+    string OrderID = 1;
+    int64 CreateTime = 2;
+    string PlatformID = 3;
+    OrderProduct Product = 4;
+    int64 CharacterID = 5;
+}
+
+message DeliverOrderReply {
+    bool Success = 1;
+    string Msg = 2;
+    int64 OrderID = 3;
+}
+
+// HelloRequest!
+message HelloRequest {
+    // Name!
+    string name = 1;
+}
+
+// HelloRequestFrom!
+message HelloRequestFrom {
+    // Name!
+    string name = 1;
+    // From!
+    string from = 2;
+}
+
+// HelloReply!
+message HelloReply {
+    // Message!
+    string message = 1;
+}
+
+
+

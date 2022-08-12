@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+
+package GrpcProto;
+
+service Account {
+    rpc ConnectServer (ConnectRequest) returns (ConnectReply) {}
+    rpc LoginCheck (LoginRequest) returns (LoginReply) {}
+}
+
+// The request message containing the user's name.
+message ConnectRequest {
+  string server_name = 1;
+  string server_address = 2;
+}
+
+// The response message containing the greetings
+message ConnectReply {
+  bool success = 1;
+  string message = 2;
+}
+
+
+message LoginRequest {
+  string token = 1;
+}
+
+message LoginReply {
+  bool success = 1;
+  string user_id = 2;
+  string message = 3;
+}

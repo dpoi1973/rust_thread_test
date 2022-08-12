@@ -13,10 +13,23 @@ serde = { version = "1.0.142", features = ["derive"] }
 serde_json = "1.0.83"
 chrono = { version = "0.4.20", features = ["serde"] }
 dotenv = "0.15.0"
-mongodb = "2.3.0"
+mongodb = "2"
 futures = "0.3"
-awc = "3.0"
+awc = { version = "3.0.0", features = ["openssl"] }
 redis = { version = "0.21", features = ["cluster", "connection-manager", "tokio-comp", "tokio-native-tls-comp"] }
+tokio = { version = "1.0", features = ["macros", "rt-multi-thread"] }
+tonic = "0.8"
+prost = "0.11"
+openssl = "0.10.41"
+
+[build-dependencies]
+tonic-build = "0.8"
 
 [[bin]]
 name = "account_server"
+
+[[bin]]
+name = "grpc_server"
+
+[[bin]]
+name = "order_server"

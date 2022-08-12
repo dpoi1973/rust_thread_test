@@ -1,73 +1,82 @@
 use crate::error::MyError;
 use actix_web::web;
-use mongodb::bson::{oid::ObjectId, DateTime};
+use mongodb::bson::{doc,oid::ObjectId, DateTime};
 use serde::{Deserialize, Serialize};
 use std::convert::TryFrom;
 
+//数据库accounts字段
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Account {
     pub _id: Option<ObjectId>,
-    pub username: String,
-    pub role: Option<u8>,
-    pub created_at: Option<DateTime>,
-    pub updated_at: Option<DateTime>,
-}
-
-#[derive(Deserialize, Serialize, Debug, Clone)]
-pub struct CreateAccount {
-    pub username: String,
-    pub id_card: Option<String>,
-    pub birth_day: Option<String>,
-    pub phone: Option<String>,
-    pub role: u8,
-    pub extra_id: Option<String>,
-    pub extra_type: Option<String>,
-    pub auth: Option<u8>,
+    pub userId: String,
+    pub auth: Option<u32>,
     pub age: Option<u32>,
+    pub isGuest: Option<u32>,
+    pub channelNo: Option<String>,
+    pub idCard: Option<String>,
+    pub birthDay: Option<String>,
+    pub userName: Option<String>,
+    pub nickName: Option<String>,
+    pub createdAt: Option<DateTime>,
+    pub updatedAt: Option<DateTime>,
 }
 
-impl TryFrom<web::Json<CreateAccount>> for CreateAccount {
+impl Account {
+    pub fn insert() -> Result<(), MyError>{
+        Ok(())
+    }
+}
+
+//验证雷霆账号request
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct LeiTingAccount {
+    pub userId: String,
+    pub token: String,
+    pub channelNo: String,
+    pub userName: Option<String>,
+    pub nickName: Option<String>,
+}
+
+impl TryFrom<web::Json<LeiTingAccount>> for LeiTingAccount {
     type Error = MyError;
-    fn try_from(account: web::Json<CreateAccount>) -> Result<Self, Self::Error> {
-        Ok(CreateAccount {
-            username: account.username.clone(),
-            role: account.role,
-            id_card: account.id_card.clone(),
-            birth_day: account.birth_day.clone(),
-            phone: account.phone.clone(),
-            extra_id: account.extra_id.clone(),
-            extra_type: account.extra_type.clone(),
-            auth: account.auth,
-            age: account.age,
+
+    fn try_from(account: web::Json<LeiTingAccount>) -> Result<Self, Self::Error> {
+        println!("das");
+        Ok(LeiTingAccount {
+            userId: account.userId.clone(),
+            token: account.token.clone(),
+            channelNo: account.channelNo.clone(),
+            userName: account.userName.clone(),
+            nickName: account.nickName.clone(),
         })
     }
 }
 
+//验证雷霆账号response
 #[derive(Deserialize, Serialize, Debug, Clone)]
-pub struct UpdateAccount {
-    pub username: String,
-    pub id_card: Option<String>,
-    pub birth_day: Option<String>,
-    pub phone: Option<String>,
-    pub role: Option<u8>,
-    pub extra_id: Option<String>,
-    pub extra_type: Option<String>,
-    pub auth: Option<u8>,
-    pub age: Option<u32>,
+pub struct LeiTingAccountResp {
+    pub userId: String,
+    pub token: String,
 }
 
-impl From<web::Json<UpdateAccount>> for UpdateAccount {
-    fn from(account: web::Json<UpdateAccount>) -> Self {
-        UpdateAccount {
-            username: account.username.clone(),
-            role: account.role,
-            id_card: account.id_card.clone(),
-            birth_day: account.birth_day.clone(),
-            phone: account.phone.clone(),
-            extra_id: account.extra_id.clone(),
-            extra_type: account.extra_type.clone(),
-            auth: account.auth,
-            age: account.age,
+impl From<web::Json<LeiTingAccountResp>> for LeiTingAccountResp {
+    fn from(account: web::Json<LeiTingAccountResp>) -> Self {
+        LeiTingAccountResp {
+            userId: account.userId.clone(),
+            token: account.token.clone(),
         }
     }
+}
+
+//创建雷霆账号
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct CreateAccount {
+    pub userId: String,
+    pub auth: u32,
+    pub age: u32,
+    pub isGuest: u32,
+    pub channelNo: String,
+    pub idCard: String,
+    pub birthDay: Option<String>,
+    pub createdAt: DateTime,
 }

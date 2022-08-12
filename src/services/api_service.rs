@@ -14,7 +14,7 @@ pub async fn get_avatar_array_from_platform_server(
     for item in array {
         // println!("for:{:?}", item);
         let arr = item[0];
-        let h = tokio::spawn(async move { http_service::get(url, token, &arr).await });
+        let h = tokio::spawn(async move { http_service::get(url, tokenawait, &arr). });
         threads.push(h);
     }
     let mut ids = vec![];
