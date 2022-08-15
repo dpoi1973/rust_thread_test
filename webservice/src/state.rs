@@ -1,6 +1,6 @@
-use std::sync::Mutex;
 use mongodb::Client;
 use redis::Client as redisCli;
+use std::sync::Mutex;
 
 pub struct AppState {
     pub health_check_response: String,

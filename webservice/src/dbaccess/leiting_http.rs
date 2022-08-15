@@ -6,6 +6,7 @@ use crate::{
 };
 
 //雷霆账号验证请求
+#[allow(non_snake_case)]
 pub async fn get_account_from_leiting(
     userId: String,
     channelNo: String,

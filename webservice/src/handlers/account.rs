@@ -1,4 +1,4 @@
-use crate::dbaccess::{account::*, account_redis::*, leiting_http::*};
+use crate::dbaccess::{account::*, redis::*, leiting_http::*};
 use crate::error::MyError;
 use crate::models::account::{CreateAccount, LeiTingAccount, LeiTingAccountResp};
 use crate::state::AppState;
@@ -23,7 +23,7 @@ pub async fn leiting_login_account(
             if user.userId == new_account.userId {
                 HttpResponse::Ok().json(user);
             } else {
-                return Err(MyError::ActixError("error user".into()));
+                return Err(MyError::BadRequest("error user".into()));
             }
         }
         _ => {}
@@ -61,7 +61,7 @@ pub async fn leiting_login_account(
                 token: new_account.token.clone(),
             }))
         }
-        _ => Err(MyError::ActixError("error user".into())),
+        _ => Err(MyError::NotFound("user not found".into())),
     }
 }
 

@@ -5,6 +5,7 @@ use serde::{Deserialize, Serialize};
 use std::convert::TryFrom;
 
 //数据库accounts字段
+#[allow(non_snake_case)]
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Account {
     pub _id: Option<ObjectId>,
@@ -21,13 +22,8 @@ pub struct Account {
     pub updatedAt: Option<DateTime>,
 }
 
-impl Account {
-    pub fn insert() -> Result<(), MyError>{
-        Ok(())
-    }
-}
-
 //验证雷霆账号request
+#[allow(non_snake_case)]
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct LeiTingAccount {
     pub userId: String,
@@ -53,6 +49,7 @@ impl TryFrom<web::Json<LeiTingAccount>> for LeiTingAccount {
 }
 
 //验证雷霆账号response
+#[allow(non_snake_case)]
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct LeiTingAccountResp {
     pub userId: String,
@@ -69,6 +66,7 @@ impl From<web::Json<LeiTingAccountResp>> for LeiTingAccountResp {
 }
 
 //创建雷霆账号
+#[allow(non_snake_case)]
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct CreateAccount {
     pub userId: String,

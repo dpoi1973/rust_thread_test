@@ -1,11 +1,11 @@
-use crate::dbaccess::account_redis::*;
+use crate::dbaccess::redis::*;
 use dotenv::dotenv;
 use redis::Client;
 use std::env;
 use tonic::transport::Server;
 use tonic::{Request, Response, Status};
-use AccountGrpc::account_server::{Account, AccountServer};
-use AccountGrpc::{ConnectReply, ConnectRequest, LoginReply, LoginRequest};
+use server_grpc::account_server::{Account, AccountServer};
+use server_grpc::{ConnectReply, ConnectRequest, LoginReply, LoginRequest};
 
 #[path = "../dbaccess/mod.rs"]
 mod dbaccess;
@@ -16,8 +16,8 @@ mod error;
 #[path = "../models/mod.rs"]
 mod models;
 
-pub mod AccountGrpc {
-    tonic::include_proto!("grpc_proto");
+pub mod server_grpc {
+    tonic::include_proto!("grpc_plat_proto");
 }
 
 // #[derive(Default)]
@@ -39,14 +39,14 @@ impl Account for MyServer {
         )
         .await;
         match result {
-            Ok(k) => {
+            Ok(_k) => {
                 let response = ConnectReply {
                     success: true,
                     message: "connect ok".to_string(),
                 };
                 Ok(Response::new(response))
             }
-            Err(e) => {
+            Err(_e) => {
                 let response = ConnectReply {
                     success: false,
                     message: "Cannot save server".to_string(),

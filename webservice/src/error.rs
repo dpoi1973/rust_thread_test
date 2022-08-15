@@ -12,6 +12,7 @@ pub enum MyError {
     DBError(String),
     ActixError(String),
     NotFound(String),
+    BadRequest(String),
 }
 
 #[derive(Debug, Serialize)]
@@ -34,6 +35,10 @@ impl MyError {
                 println!("Not found error occurred: {:?}", msg);
                 msg.into()
             }
+            MyError::BadRequest(msg) => {
+                println!("Bad request: {:?}", msg);
+                msg.into()
+            }
         }
     }
 }
@@ -42,6 +47,7 @@ impl error::ResponseError for MyError {
     fn status_code(&self) -> StatusCode {
         match self {
             MyError::DBError(_msg) | MyError::ActixError(_msg) => StatusCode::INTERNAL_SERVER_ERROR,
+            MyError::BadRequest(_msg) => StatusCode::BAD_REQUEST,
             MyError::NotFound(_msg) => StatusCode::NOT_FOUND,
         }
     }
@@ -90,19 +96,19 @@ impl From<tonic::transport::Error> for MyError {
 
 impl From<SendRequestError> for MyError {
     fn from(err: SendRequestError) -> Self {
-        MyError::DBError(err.to_string())
+        MyError::ActixError(err.to_string())
     }
 }
 
 impl From<JsonPayloadError> for MyError {
     fn from(err: JsonPayloadError) -> Self {
-        MyError::DBError(err.to_string())
+        MyError::ActixError(err.to_string())
     }
 }
 
 impl From<error::PayloadError> for MyError {
     fn from(err: error::PayloadError) -> Self {
-        MyError::DBError(err.to_string())
+        MyError::ActixError(err.to_string())
     }
 }
 
@@ -120,6 +126,6 @@ impl From<mongodb::bson::de::Error> for MyError {
 
 impl From<serde_json::Error> for MyError {
     fn from(err: serde_json::Error) -> Self {
-        MyError::DBError(err.to_string())
+        MyError::BadRequest(err.to_string())
     }
 }

@@ -22,6 +22,6 @@ pub fn account_routes(cfg: &mut web::ServiceConfig) {
 pub fn order_routes(cfg: &mut web::ServiceConfig) {
     cfg.service(
         web::scope("/order")
-            .route("/", web::post().to(send_order_to_game))
+            .route("/lt_order", web::post().to(get_order_from_leiting))
     );
 }

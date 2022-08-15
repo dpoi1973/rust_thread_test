@@ -2,12 +2,14 @@ use crate::error::MyError;
 use crate::models::account::CreateAccount;
 use mongodb::bson::doc;
 use mongodb::{bson::DateTime, options::UpdateModifications, Client, Collection};
-const DATABASE: &str = "rust_pkt";
-const TABLE: &str = "accounts";
+
+// #[allow(dead_code)]
+const _DATABASE: &str = "rust_pkt";
+const _TABLE: &str = "accounts";
 
 //数据库创建或更新雷霆账号
 pub async fn create_account(client: &Client, account: CreateAccount) -> Result<(), MyError> {
-    let conn: Collection<CreateAccount> = client.database(DATABASE).collection(TABLE);
+    let conn: Collection<CreateAccount> = client.database(_DATABASE).collection(_TABLE);
 
     let row = conn
         .find_one(doc! {"userId": &account.userId}, None)
@@ -17,7 +19,7 @@ pub async fn create_account(client: &Client, account: CreateAccount) -> Result<(
         Some(user) => {
             let update = doc! {
                 "$set": {
-                "userId": account.userId.clone(),
+                "userId": user.userId.clone(),
                 "auth": account.auth,
                 "age": account.age,
                 "isGuest": account.isGuest,

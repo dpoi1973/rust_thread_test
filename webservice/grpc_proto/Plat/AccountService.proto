@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 
-package GrpcProto;
+package GrpcPlatProto;
 
 service Account {
     rpc ConnectServer (ConnectRequest) returns (ConnectReply) {}
